@@ -11,7 +11,7 @@ class XmlParser {
     private val ns: String? = null
 
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream): List<*> {
+    fun parse(inputStream: InputStream): List<Post> {
         inputStream.use { inputStream ->
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -60,7 +60,7 @@ class XmlParser {
                 else -> skip(parser)
             }
         }
-        return Post(title, summary, link)
+        return Post(title, link)
     }
 
     // Processes title tags in the feed.

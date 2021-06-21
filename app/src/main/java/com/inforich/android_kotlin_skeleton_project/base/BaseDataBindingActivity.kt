@@ -8,7 +8,7 @@ import androidx.databinding.ViewDataBinding
 
 abstract class BaseDataBindingActivity<T : ViewDataBinding, V : BaseViewModel> :
     AppCompatActivity() {
-    var viewDataBinding: T? = null
+    lateinit var viewDataBinding: T
         protected set
     private var mViewModel: V? = null
     override fun onCreate(savedInstanceState: Bundle?) {
