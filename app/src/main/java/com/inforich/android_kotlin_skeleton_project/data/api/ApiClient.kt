@@ -45,6 +45,7 @@ object ApiClient {
             .baseUrl(ApiEndPoints.BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
+//            .addConverterFactory(SimpleXmlConverterFactory.create())
             .build()
             .create(ApiInterface::class.java)
     }

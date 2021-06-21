@@ -45,12 +45,12 @@ android {
             signingConfig signingConfigs.debug
             applicationIdSuffix ".dev"
 
-            buildConfigField 'String', 'BASE_URL', '"https://www.flickr.com/services/feeds/"'
+            buildConfigField 'String', 'BASE_URL', '"https://jsonplaceholder.typicode.com/"'
         }
 
         product {
             dimension "env"
-            buildConfigField 'String', 'BASE_URL', '"https://www.flickr.com/services/feeds/"'
+            buildConfigField 'String', 'BASE_URL', '"https://jsonplaceholder.typicode.com/"'
         }
 
 
@@ -80,6 +80,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     // MVVM建築のため
     def lifecycle_version = "2.3.1"
@@ -97,8 +98,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
 
     //Rx
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
 
 
 }
