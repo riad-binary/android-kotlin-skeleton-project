@@ -10,8 +10,12 @@ import com.google.gson.Gson
 import com.inforich.android_kotlin_skeleton_project.App
 import com.inforich.android_kotlin_skeleton_project.base.BaseViewModel
 import com.inforich.android_kotlin_skeleton_project.utils.NoConnectivityException
+import com.inforich.android_kotlin_skeleton_project.utils.XmlParser
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import java.nio.charset.StandardCharsets
 
 class MainViewModel: BaseViewModel() {
     private val TAG: String = MainViewModel::class.java.getName()
@@ -29,32 +33,47 @@ class MainViewModel: BaseViewModel() {
     }
 
     fun getPost() {
-        Log.e(TAG, "getPost")
+        Log.e(TAG, "getPost()")
         _networkState.postValue(NetworkState.LOADING)
-        try {
             compositeDisposable.add(
                 apiService.getPost()
                     .subscribeOn(Schedulers.io())
                     .subscribe(
                         {
 //                            Log.e(TAG, "getPost: " + Gson().toJson(it.body()))
-                            Log.e(TAG, "getPost: " + it.body())
+//                            Log.e("rrr", "getPost: " + it.string())
+
+                            try{
+
+                                val inputString: String = it.string()
+//                                val inputString: String = xmlString
+
+                                val stream: InputStream =
+                                    ByteArrayInputStream(inputString.toByteArray(StandardCharsets.UTF_8))
+
+                                val list = XmlParser().parse(stream)
+
+                                 Log.e(TAG, "getPost: " + Gson().toJson(list))
+
+                            } catch (e: Exception){
+                                Log.e(TAG, "getPost error: " +e.message)
+                            }
+
+
+
                         },
                         {
                             if (it is NoConnectivityException) {
                                 _networkState.postValue(NetworkState.NO_CONNECTION)
                             } else {
                                 _networkState.postValue(NetworkState.ERROR)
+                                Log.e(TAG, "getPost error: " + it.message)
                             }
                         }
                     )
             )
 
-        } catch (e: Exception) {
-            e.message?.let { Log.e(TAG, it) }
-        }
 
     }
-
 
 }
