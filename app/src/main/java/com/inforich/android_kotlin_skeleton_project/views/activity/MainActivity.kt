@@ -8,7 +8,8 @@ import com.inforich.android_kotlin_skeleton_project.databinding.ActivityMainBind
 import com.inforich.android_kotlin_skeleton_project.viewmodels.MainViewModel
 
 class MainActivity : BaseDataBindingActivity<ActivityMainBinding, MainViewModel>() {
-    private var mViewModel: MainViewModel? = null
+    private val TAG: String = MainActivity::class.java.getName()
+    private lateinit var mViewModel: MainViewModel
 
     override val layoutId: Int
         get() = R.layout.activity_main
@@ -20,12 +21,14 @@ class MainActivity : BaseDataBindingActivity<ActivityMainBinding, MainViewModel>
     get (){
         viewDataBinding!!.lifecycleOwner = this
         mViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        mViewModel!!.init()
+        mViewModel.init()
         return mViewModel as MainViewModel
     }
 
     override fun initView() {
-        Log.e("rrr", "initView")
+        Log.e(TAG, "initView")
+
+        mViewModel.getPost()
     }
 
 }
