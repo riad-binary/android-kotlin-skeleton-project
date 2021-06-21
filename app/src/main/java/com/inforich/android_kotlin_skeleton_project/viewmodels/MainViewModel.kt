@@ -40,19 +40,11 @@ class MainViewModel: BaseViewModel() {
                     .subscribeOn(Schedulers.io())
                     .subscribe(
                         {
-//                            Log.e(TAG, "getPost: " + Gson().toJson(it.body()))
-//                            Log.e("rrr", "getPost: " + it.string())
-
                             try{
-
                                 val inputString: String = it.string()
-//                                val inputString: String = xmlString
-
                                 val stream: InputStream =
                                     ByteArrayInputStream(inputString.toByteArray(StandardCharsets.UTF_8))
-
                                 val list = XmlParser().parse(stream)
-
                                  Log.e(TAG, "getPost: " + Gson().toJson(list))
 
                             } catch (e: Exception){

@@ -1,9 +1,7 @@
 package com.inforich.android_kotlin_skeleton_project.utils
 
-import android.util.Log
 import android.util.Xml
-import com.google.gson.Gson
-import org.simpleframework.xml.util.Entry
+import com.inforich.android_kotlin_skeleton_project.data.models.Post
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
@@ -24,8 +22,8 @@ class XmlParser {
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readFeed(parser: XmlPullParser): List<Entry> {
-        val entries = mutableListOf<Entry>()
+    private fun readFeed(parser: XmlPullParser): List<Post> {
+        val entries = mutableListOf<Post>()
 
         parser.require(XmlPullParser.START_TAG, ns, "feed")
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -42,12 +40,11 @@ class XmlParser {
         return entries
     }
 
-    data class Entry(val title: String?, val summary: String?, val link: String?)
 
     // Parses the contents of an entry. If it encounters a title, summary, or link tag, hands them off
 // to their respective "read" methods for processing. Otherwise, skips the tag.
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readEntry(parser: XmlPullParser): Entry {
+    private fun readEntry(parser: XmlPullParser): Post {
         parser.require(XmlPullParser.START_TAG, ns, "entry")
         var title: String? = null
         var summary: String? = null
@@ -63,7 +60,7 @@ class XmlParser {
                 else -> skip(parser)
             }
         }
-        return Entry(title, summary, link)
+        return Post(title, summary, link)
     }
 
     // Processes title tags in the feed.
@@ -85,11 +82,10 @@ class XmlParser {
         if (tag == "link") {
             if (relType == "enclosure") {
                 link = parser.getAttributeValue(null, "href")
-                parser.nextTag()
-            } else{
-                parser.nextTag()
             }
         }
+
+        parser.nextTag()
         parser.require(XmlPullParser.END_TAG, ns, "link")
         return link
     }
