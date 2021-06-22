@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">kotlin base</string>
 
+    <!--    PostDetails-->
+    <string name="post_details_title">Title: %s</string>
+    <string name="post_details_author">Author: %s</string>
+    <string name="post_details_published_at">Published at: %s</string>
 
     <!--    Error Messages-->
     <string name="error_no_internet">error_no_internet</string>
