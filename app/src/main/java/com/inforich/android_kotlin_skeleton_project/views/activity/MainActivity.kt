@@ -1,6 +1,7 @@
 package com.inforich.android_kotlin_skeleton_project.views.activity
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -50,9 +51,9 @@ class MainActivity : BaseDataBindingActivity<ActivityMainBinding, MainViewModel>
         mViewModel.networkState.observe(this, Observer {
             Log.d(TAG, it.toString())
             if(it != NetworkState.LOADING){
-
+                viewDataBinding.progressBar.visibility = View.GONE
             } else {
-
+                viewDataBinding.progressBar.visibility = View.VISIBLE
             }
         })
 
