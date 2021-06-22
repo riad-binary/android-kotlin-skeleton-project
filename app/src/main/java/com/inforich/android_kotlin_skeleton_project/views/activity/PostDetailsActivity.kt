@@ -31,7 +31,9 @@ class PostDetailsActivity : AppCompatActivity() {
             .load(post?.link)
             .into(imageView)
 
-        txtTitle.text = post?.title
+        txtTitle.text = getString(R.string.post_details_title, post?.title)
+        txtAuthor.text = getString(R.string.post_details_author, post?.author)
+        txtPublishedAt.text = getString(R.string.post_details_published_at, post?.published)
     }
 
 }

@@ -47,28 +47,30 @@ class XmlParser {
     private fun readEntry(parser: XmlPullParser): Post {
         parser.require(XmlPullParser.START_TAG, ns, "entry")
         var title: String? = null
-        var summary: String? = null
+        var published: String? = null
         var link: String? = null
+        var author: String? = null
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
             }
             when (parser.name) {
-                "title" -> title = readTitle(parser)
-//                "content" -> summary = readSummary(parser)
+                "title" -> title = readTag(parser, "title")
+                "published" -> published = readTag(parser, "published")
                 "link" -> link = readLink(parser)
+                "author" -> author = readAuthor(parser)
                 else -> skip(parser)
             }
         }
-        return Post(title, link)
+        return Post(title, link, published, author)
     }
 
     // Processes title tags in the feed.
     @Throws(IOException::class, XmlPullParserException::class)
-    private fun readTitle(parser: XmlPullParser): String {
-        parser.require(XmlPullParser.START_TAG, ns, "title")
+    private fun readTag(parser: XmlPullParser, tag: String): String {
+        parser.require(XmlPullParser.START_TAG, ns, tag)
         val title = readText(parser)
-        parser.require(XmlPullParser.END_TAG, ns, "title")
+        parser.require(XmlPullParser.END_TAG, ns, tag)
         return title
     }
 
@@ -90,16 +92,6 @@ class XmlParser {
         return link
     }
 
-    // Processes summary tags in the feed.
-    @Throws(IOException::class, XmlPullParserException::class)
-    private fun readSummary(parser: XmlPullParser): String {
-        parser.require(XmlPullParser.START_TAG, ns, "content")
-        val summary = readText(parser)
-        parser.require(XmlPullParser.END_TAG, ns, "content")
-        return summary
-    }
-
-    // For the tags title and summary, extracts their text values.
     @Throws(IOException::class, XmlPullParserException::class)
     private fun readText(parser: XmlPullParser): String {
         var result = ""
@@ -108,6 +100,22 @@ class XmlParser {
             parser.nextTag()
         }
         return result
+    }
+
+    @Throws(XmlPullParserException::class, IOException::class)
+    private fun readAuthor(parser: XmlPullParser): String {
+        parser.require(XmlPullParser.START_TAG, ns, "author")
+        var name: String = ""
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.eventType != XmlPullParser.START_TAG) {
+                continue
+            }
+            when (parser.name) {
+                "name" -> name = readTag(parser, "name")
+                else -> skip(parser)
+            }
+        }
+        return name
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
