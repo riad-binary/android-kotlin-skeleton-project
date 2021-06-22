@@ -45,7 +45,13 @@ class MainViewModel: BaseViewModel() {
                             val stream: InputStream =
                                 ByteArrayInputStream(inputString.toByteArray(StandardCharsets.UTF_8))
                             val list = XmlParser().parse(stream)
-                            postList.postValue(list)
+                            val filterList: MutableList<Post> = mutableListOf<Post>()
+                            for(item in list){
+                                if(item.link != null && (item.link.contains(".jpg") || item.link.contains(".png"))){
+                                    filterList.add(item)
+                                }
+                            }
+                            postList.postValue(filterList)
 //                             Log.e(TAG, "getPost: " + Gson().toJson(postList.value))
                             networkState.postValue(NetworkState.LOADED)
                         },

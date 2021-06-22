@@ -1,6 +1,7 @@
 package com.inforich.android_kotlin_skeleton_project.views.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.inforich.android_kotlin_skeleton_project.R
 import com.inforich.android_kotlin_skeleton_project.data.models.Post
+import com.inforich.android_kotlin_skeleton_project.utils.Constant
+import com.inforich.android_kotlin_skeleton_project.views.activity.PostDetailsActivity
 
 class PostListAdapter(var context: Context) : RecyclerView.Adapter<PostListAdapter.ViewHolder>() {
 
@@ -54,8 +57,19 @@ class PostListAdapter(var context: Context) : RecyclerView.Adapter<PostListAdapt
         Glide.with(context)
             .load(data.link)
             .into(holder.image)
+
+        holder.image.setOnClickListener {
+            switchToPostDetails(data)
+        }
     }
 
     //  total count of items in the list
     override fun getItemCount() = dataList.size
+
+    private fun switchToPostDetails(post: Post) {
+        val intent = Intent(context, PostDetailsActivity::class.java)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra(Constant.POST_ARG, post)
+        context.startActivity(intent)
+    }
 }
